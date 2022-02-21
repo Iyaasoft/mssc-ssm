@@ -4,6 +4,7 @@ import guru.springframework.mssc.ssm.domain.Payment;
 import guru.springframework.mssc.ssm.repository.PaymentRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -38,22 +39,27 @@ class PaymentServiceImplTest {
         payment = paymentRepository.getById(payment.getId());
         System.out.println(payment);
     }
-    @Disabled
     @Transactional
-    @Test
+    @RepeatedTest(10)
     void preAuth() {
         payment = paymentService.newPayment(payment);
         System.out.println(payment);
         paymentService.preAuth(payment.getId());
         System.out.println(payment);
         payment = paymentRepository.getById(payment.getId());
+        System.out.println(payment);
+    }
+    @Transactional
+    @Disabled
+    @RepeatedTest(10)
+    void authorisePayment() {
+        payment = paymentService.newPayment(payment);
+        System.out.println(payment);
+        paymentService.preAuth(payment.getId());
+        System.out.println(payment);
         paymentService.authorisePayment(payment.getId());
         payment = paymentRepository.getById(payment.getId());
         System.out.println(payment);
-    }
-    @Disabled
-    @Test
-    void authorisePayment() {
     }
     @Transactional
     @Test
